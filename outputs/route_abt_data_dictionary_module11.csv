@@ -1,0 +1,12 @@
+column_name,data_type,description,source,transformation_or_derivation,notes_or_concerns
+origin,str,Origin airport code for the route,flights table,Used as part of the route-level grouping key,"Forms the route key together with dest; only the three New York City airports (EWR, JFK, LGA)"
+dest,str,Destination airport code for the route,flights table,Used as part of the route-level grouping key,"Includes one unusual route, EWR to LGA, with a single cancelled flight"
+flight_count,int64,Number of flights observed for the route,flights table,Count of flight records grouped by origin and destination,"Includes cancelled flights; ranges from 1 to 11,262; 10 routes have fewer than 10 flights, so their averages are unstable"
+avg_dep_delay,float64,Average departure delay in minutes for the route.,flights.dep_delay,Mean of dep_delay grouped by origin and dest.,Missing for route LGA-LEX (1 canceled flight); potential timing/leakage concern if predicting before flight departure.
+avg_arr_delay,float64,"Average arrival delay for flights on the route, in minutes (target)",flights table,Mean of arr_delay grouped by origin and destination,Averages only flights with a recorded arrival delay; missing for EWR to LGA (its only flight was cancelled); negative means early on average
+max_arr_delay,float64,"Maximum recorded arrival delay for flights on the route, in minutes",flights table,Maximum of arr_delay grouped by origin and destination,Missing for EWR to LGA because its only flight was cancelled; one route has a negative maximum of -22 minutes
+avg_distance,float64,"Average flight distance for the route, in miles",flights table,Mean of distance grouped by origin and destination,No nonpositive values were found
+avg_air_time,float64,"Average airtime for flights on the route, in minutes",flights table,Mean of air_time grouped by origin and destination,Missing for EWR to LGA because its only flight was cancelled; no nonpositive values were found
+dest_airport_name,str,Full name of the destination airport,airports table,Joined from airports using dest = faa,"Missing for 7 routes whose destination (BQN, PSE, SJU, STT) is not in the airports table"
+dest_lat,float64,Latitude of the destination airport,airports table,Joined from airports using dest = faa,Missing for 7 routes whose destinations are not in the airports table
+dest_lon,float64,Longitude of the destination airport,airports table,Joined from airports using dest = faa,Missing for 7 routes whose destinations are not in the airports table
